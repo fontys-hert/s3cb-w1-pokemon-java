@@ -11,7 +11,9 @@ class PokemonTest {
         Pokemon pikachu = new Pokemon("Pika", 20, 3);
         Pokemon bulba = new Pokemon("Bulba", 25, 5);
 
-        assertTrue(pikachu.attack(bulba, new DummyDie(15)).contains("Hit!"));
+        pikachu.attack(bulba, new DummyDie(15, 1));
+
+        assertEquals(24, bulba.getCurrentHp());
     }
 
     @Test
@@ -19,8 +21,20 @@ class PokemonTest {
         Pokemon pikachu = new Pokemon("Pika", 20, 3);
         Pokemon bulba = new Pokemon("Bulba", 25, 5);
 
-        var result = pikachu.attack(bulba, new DummyDie(4));
+        var result = pikachu.attack(bulba, new DummyDie(4, 8));
 
         assertTrue(result.contains("Miss!"));
+    }
+
+    @Test
+    void attack_hits_and_dies() {
+        Pokemon bulba = new Pokemon("Bulba", 25, 5);
+        Pokemon caterpie = new Pokemon("Caterpie", 2, 1);
+
+        bulba.attack(caterpie, new DummyDie(20, 8));
+
+        assertEquals(0, caterpie.getCurrentHp());
+        assertTrue(caterpie.isDead());
+
     }
 }
